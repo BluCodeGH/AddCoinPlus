@@ -10,15 +10,11 @@ $(document).ready(function(){
         $(this).removeClass('btn-success');
         $(this).addClass('btn-warning');
         $(this).text("Stop")
-        // $('#action-button-icon').removeClass('glyphicon-play');
-        // $('#action-button-icon').addClass('glyphicon-stop');
       } else {
         // CLICK TO START AGAIN
         $(this).removeClass('btn-warning');
         $(this).addClass('btn-success');
         $(this).text("Start");
-        // $('#action-button-icon').removeClass('glyphicon-stop');
-        // $('#action-button-icon').addClass('glyphicon-play');
       }
     })
 });
