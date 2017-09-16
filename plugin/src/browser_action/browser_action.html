@@ -2,22 +2,61 @@
 <style type="text/css">
 	#mainPopup {
 		padding: 10px;
-		height: 200px;
 		width: 400px;
 		font-family: Helvetica, Ubuntu, Arial, sans-serif;
 	}
-	h1 {
-		font-size: 2em;
+	#footer {
+		margin-top: 40px;
+	}
+	#stats {
+		margin-top: 20px;
 	}
 </style>
-<link rel="stylesheet" type="text/css" href="semantic.min.css">
-<script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
-<script src="semantic.min.js"></script>
+<script src="jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="./css/bootstrap.min.css">
+<!-- <script src="./popper.js"></script> -->
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/main.js"></script>
+
 
 <div id="mainPopup">
-<h1>Hello extensionizr!</h1>
-<p>To shut this popup down, edit the manifest file and remove the "default popup" key. To edit it, just edit ext/browser_action/browser_action.html. The CSS is there, too.</p>
+	<div class="dropdown" style='width: 100%;'>
+	  <button class="btn btn-default dropdown-toggle" type="button" id="selectNonProfit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style='width: 100%;'>
+	    <span id="dropdown-title">Select non-profit</span>
+	    <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu" aria-labelledby="selectNonProfit" style='width: 100%;'>
+	    <li class="dropdown-option"><a href="#" name="Wikimedia Foundation">Wikimedia Foundation</a></li>
+	    <li class="dropdown-option"><a href="#" name="UNICEF">UNICEF</a></li>
+	    <li class="dropdown-option"><a href="#" name="Doctors Without Borders">Doctors Without Borders</a></li>
+	  </ul>
+	</div>
+	<div class="row" id="stats">
+	  <div class="col-xs-4" style="text-align: center;">
+			<h3>Hashes/s</h3>
+	    <span class="badge" style="font-size: 36px">20.1</span>
+	  </div>
+		<div class="col-xs-4" style="text-align: center;">
+			<h3>Session</h3>
+	    <span class="badge" style="font-size: 36px">20.1</span>
+	  </div>
+		<div class="col-xs-4" style="text-align: center;">
+			<h3>Total</h3>
+	    <span class="badge" style="font-size: 36px">703</span>
+	  </div>
+	</div><!-- /.row -->
+	<div class="row" id="footer">
+	  <div class="col-xs-6">
+			<!-- AddToAny BEGIN -->
+			<div style="margin-top: 15px;">
+				<a href="https://www.addtoany.com/share?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fcategory%2Fextensions%3Fhl%3Des&amp;linkname=Add%20Coin%20Plus" target="_blank"><img src="https://static.addtoany.com/buttons/a2a.svg" width="32" height="32"></a>
+				<a href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fcategory%2Fextensions%3Fhl%3Des&amp;linkname=Add%20Coin%20Plus" target="_blank"><img src="https://static.addtoany.com/buttons/facebook.svg" width="32" height="32"></a>
+				<a href="https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fcategory%2Fextensions%3Fhl%3Des&amp;linkname=Add%20Coin%20Plus" target="_blank"><img src="https://static.addtoany.com/buttons/twitter.svg" width="32" height="32"></a>
+			</div>
+			<!-- AddToAny END -->
+		</div>
+		<div class="col-xs-6">
+			<a href="#" id="action-button" class="btn btn-lg btn-success"  style="float: right;"> Start </a>
+		</div>
+	</div>
 </div>
