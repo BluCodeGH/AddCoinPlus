@@ -46,8 +46,12 @@ if (localStorage.idleThreads == undefined) {
   localStorage.idleThreads = navigator.hardwareConcurrency - 1;
 }
 
+if (localStorage.crazyMode == undefined) {
+  localStorage.crazyMode = 0; // false
+}
+
 //We do this to prevent errors before first miner creation
-miner = new CoinHive.User(targets[localStorage.donationTarget], localStorage.donationTarget); 
+miner = new CoinHive.User(targets[localStorage.donationTarget], localStorage.donationTarget);
 
 function start() { //Start a new miner
   console.log("Starting miner.");

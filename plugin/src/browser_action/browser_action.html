@@ -31,17 +31,19 @@
 	#question-sleep {
 		cursor: pointer;
 	}
+	#goCrazy {
+		cursor: pointer;
+		margin-top: 10px;
+	}
 </style>
 <script src="jquery-3.2.1.min.js"></script>
 <link rel="stylesheet" href="./css/bootstrap.min.css">
-<link rel="stylesheet" href="./css/bootstrap-slider.min.css">
 <!-- <script src="./popper.js"></script> -->
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/main.js"></script>
-<script src="./js/bootstrap-slider.min.js"></script>
 
 
-<div id="mainPopup">
+<div id="mainPopup" class="normalMode">
 	<div class="dropdown" style='width: 100%;'>
 	  <button class="btn btn-default dropdown-toggle" type="button" id="selectNonProfit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style='width: 100%;'>
 	    <span id="dropdown-title">Select non-profit</span>
@@ -82,7 +84,7 @@
 		</div>
 	</div>
 	<div class="row" id="footer">
-	  <div class="col-xs-6">
+	  <div class="col-xs-4">
 			<!-- AddToAny BEGIN -->
 			<div style="margin-top: 15px;">
 				<a href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fcategory%2Fextensions%3Fhl%3Des&amp;linkname=Add%20Coin%20Plus" target="_blank"><img src="https://static.addtoany.com/buttons/facebook.svg" width="32" height="32"></a>
@@ -90,7 +92,10 @@
 			</div>
 			<!-- AddToAny END -->
 		</div>
-		<div class="col-xs-6">
+		<div class="col-xs-4" style="text-align: center; font-size: 30px; color: orange;" id="goCrazyContainer">
+			<span class="glyphicon glyphicon-flash" id="goCrazy" data-toggle="tooltip" title="Disable all limits. Put everything to max!!!" aria-hidden="true"></span>
+		</div>
+		<div class="col-xs-4">
 			<a href="#" id="action-button" class="btn btn-lg btn-success"  style="float: right;"> Start </a>
 		</div>
 	</div>

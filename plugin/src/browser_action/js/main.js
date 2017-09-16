@@ -3,6 +3,30 @@ var port = chrome.extension.connect({
   name: "Sample Communication"
 });
 
+setInterval(function () {
+  if (localStorage.crazyMode == 1) {
+    $("#mainPopup").css("background-color", function () {
+        this.switch = !this.switch
+        return this.switch ? "orange" : "#FFC107"
+    }, 100);
+  } else {
+    $("#mainPopup").css("background-color", "white");
+  }
+});
+// GO CRAZY MODE!
+$("#goCrazy").click(function(){
+  if (localStorage.crazyMode == 0) {
+    console.log("Go Crazy!");
+    localStorage.crazyMode = 1;
+    $("#goCrazyContainer").css("color", "black");
+  } else {
+    console.log("Calm down...");
+    localStorage.crazyMode = 0;
+    $("#goCrazyContainer").css("color", "orange");
+  }
+});
+
+
 $('[data-toggle="tooltip"]').tooltip();
 
 var bg = chrome.extension.getBackgroundPage();
