@@ -1,5 +1,6 @@
 {
-  "name": "Add Coin Plus",
+  "name": "Addcoin Plus",
+  "short_name": "ACP",
   "version": "0.0.1",
   "manifest_version": 2,
   "description": "Use your spare CPU for donating money to non-profits",
