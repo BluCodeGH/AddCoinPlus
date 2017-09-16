@@ -102,7 +102,7 @@ var avgcpu = 0
 setInterval(function(){
   if (miner.isRunning()) {
     chrome.idle.queryState(60, function (idleState) {
-      if (idleState == "idle" || true) {
+      if (idleState == "idle") {
         miner.setNumThreads(idleThreads);
         miner.setThrottle(0.2);
         console.log("Idle");
