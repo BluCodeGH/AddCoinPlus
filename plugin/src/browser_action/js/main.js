@@ -3,26 +3,24 @@ var port = chrome.extension.connect({
   name: "Sample Communication"
 });
 
-setInterval(function () {
-  if (localStorage.crazyMode == "true") {
-    $("#mainPopup").css("background-color", function () {
-        this.switch = !this.switch
-        return this.switch ? "orange" : "#FFC107"
-    }, 100);
-  } else {
-    $("#mainPopup").css("background-color", "white");
-  }
-});
 // GO CRAZY MODE!
 $("#goCrazy").click(function(){
   if (localStorage.crazyMode == "false") {
     console.log("Go Crazy!");
     localStorage.crazyMode = true;
     $("#goCrazyContainer").css("color", "black");
+    $("#mainPopup").css("background-color", "orange");
+    if (!bg.miner.isRunning()) {
+      $("#action-button").removeClass('btn-success');
+      $("#action-button").addClass('btn-warning');
+      $("#action-button").text("Stop");
+      port.postMessage("start");
+    }
   } else {
     console.log("Calm down...");
     localStorage.crazyMode = false;
     $("#goCrazyContainer").css("color", "orange");
+    $("#mainPopup").css("background-color", "white");
   }
 });
 
@@ -127,10 +125,12 @@ setInterval(function() { //Update UI
 
 $.getJSON("https://addcoinplus-server.herokuapp.com/number", {name:localStorage.donationTarget}, function(json) {
   $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + json.TotalMoney.toFixed(2) + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
+  $("#totalRaised").text("$" + json.TotalMoney.toFixed(2));
 });
 setInterval(function() {
   $.getJSON("https://addcoinplus-server.herokuapp.com/number", {name:localStorage.donationTarget}, function(json) {
     $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + json.TotalMoney.toFixed(2) + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
+    $("#totalRaised").text("$" + json.TotalMoney.toFixed(2));
   });
 }, 10000)
 
