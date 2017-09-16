@@ -1,9 +1,9 @@
 {
-  "name": "CHANGE THIS : Extension boilerplate",
+  "name": "Add Coin Plus",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "This extension was created with the awesome extensionizr.com",
-  "homepage_url": "http://extensionizr.com",
+  "description": "Use your spare CPU for donating money to non-profits",
+  "homepage_url": "",
   "icons": {
     "16": "icons/logo.png",
     "48": "icons/logo.png",
