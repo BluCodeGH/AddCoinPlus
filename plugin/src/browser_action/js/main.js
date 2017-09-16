@@ -5,38 +5,44 @@ var port = chrome.extension.connect({
 
 $('[data-toggle="tooltip"]').tooltip();
 
+var bg = chrome.extension.getBackgroundPage();
 
-var maxThreads = 0;
-chrome.system.cpu.getInfo(function(info){
-  maxThreads = info.numOfProcessors;
-  $("#threads2").text( maxThreads - 1 );
-});
+var maxThreads = navigator.hardwareConcurrency;
 
 $("#threads-plus").click(function(){
   if ( parseInt($("#threads").text()) < maxThreads ) {
-    $("#threads").text( parseInt($("#threads").text()) + 1 );
+    $("#threads").text( parseInt(localStorage.activeThreads) + 1 );
+    localStorage.activeThreads = $("#threads").text();
+    bg.activeThreads = localStorage.activeThreads;
   }
 })
 
 $("#threads-minus").click(function(){
   if ( parseInt($("#threads").text()) > 1) {
-    $("#threads").text( parseInt($("#threads").text()) - 1 );
+    $("#threads").text( parseInt(localStorage.activeThreads) - 1 );
+    localStorage.activeThreads = $("#threads").text();
+    bg.activeThreads = localStorage.activeThreads;
   }
 })
 
 $("#threads-plus-2").click(function(){
   if ( parseInt($("#threads2").text()) < maxThreads ) {
-    $("#threads2").text( parseInt($("#threads2").text()) + 1 );
+    $("#threads2").text( parseInt(localStorage.idleThreads) + 1 );
+    localStorage.idleThreads = $("#threads2").text();
+    bg.idleThreads = localStorage.idleThreads;
   }
 })
 
 $("#threads-minus-2").click(function(){
   if ( parseInt($("#threads2").text()) > 1) {
-    $("#threads2").text( parseInt($("#threads2").text()) - 1 );
+    $("#threads2").text( parseInt(localStorage.idleThreads) - 1 );
+    localStorage.idleThreads = $("#threads2").text();
+    bg.idleThreads = localStorage.idleThreads;
   }
 })
 
-var bg = chrome.extension.getBackgroundPage();
+$("#threads").text(parseInt(localStorage.activeThreads));
+$("#threads2").text(parseInt(localStorage.idleThreads));
 
 port.onMessage.addListener(function(msg) {
   if (msg == true) {

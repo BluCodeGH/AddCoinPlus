@@ -2,9 +2,7 @@
 
 //example of using a message handler from the inject scripts
 chrome.extension.onConnect.addListener(function(port) {
-  console.log("Connected .....");
   port.onMessage.addListener(function(msg) {
-    console.log("message recieved: " + msg);
     switch (msg) {
       case "status":
         port.postMessage(miner.isRunning());
@@ -29,6 +27,9 @@ var totalHashes = 0;
 var oldTotalHashes = 0;
 var initialTotalHashes = 0;
 
+var activeThreads = 1;
+var idleThreads = navigator.hardwareConcurrency - 1;
+
 if (isNaN(localStorage.totalHashes) || localStorage.totalHashes == undefined) {
   localStorage.totalHashes = 0;
 }
@@ -37,6 +38,12 @@ if (localStorage.donationTarget == undefined) {
 }
 if (localStorage.idle == undefined) {
   localStorage.idle = false;
+}
+if (localStorage.activeThreads == undefined) {
+  localStorage.activeThreads = 1;
+}
+if (localStorage.idleThreads == undefined) {
+  localStorage.idleThreads = navigator.hardwareConcurrency - 1;
 }
 
 //We do this to prevent errors before first miner creation
@@ -50,6 +57,7 @@ function start() { //Start a new miner
   oldTotalHashes = 0;
   initialTotalHashes = Number(localStorage.totalHashes);
 
+  miner.setNumThreads(1);
   miner.start();
 }
 
@@ -74,6 +82,13 @@ setInterval(function() { //Update the internal total hashes
 
   localStorage.totalHashes = Number(localStorage.totalHashes) + totalHashes - oldTotalHashes; //Increase our local total hashes
   oldTotalHashes = totalHashes;
+
+  if (miner.isRunning()) {
+    HPS = miner.getHashesPerSecond();
+    chrome.browserAction.setBadgeText({text: HPS.toFixed(1).toString()});
+  } else {
+    chrome.browserAction.setBadgeText({text: ""});
+  }
 }, 1000);
 
 var totalCPUTime = 0;
@@ -85,41 +100,17 @@ var cpuPercentage = 0;
 var avgcpu = 0
 
 setInterval(function(){
-  if (miner.isRunning() && localStorage.idle == "false") {
-    chrome.system.cpu.getInfo(function(info){
-      info.processors.forEach(function(processor){
-        var usage = processor.usage;
-        totalCPUTime += usage.total;
-        totalCPUIdleTime += usage.idle;
-      })
-      totalCPUTime -= oldTotalTime;
-      oldTotalTime += totalCPUTime;
-      totalCPUIdleTime -= oldIdleTime;
-      oldIdleTime += totalCPUIdleTime
-      totalCPUUsageTime = totalCPUTime - totalCPUIdleTime;
-      cpuPercentage = totalCPUUsageTime/totalCPUTime*100
-      if (avgcpu == 0) {
-        avgcpu = cpuPercentage;
+  if (miner.isRunning()) {
+    chrome.idle.queryState(60, function (idleState) {
+      if (idleState == "idle" || true) {
+        miner.setNumThreads(idleThreads);
+        miner.setThrottle(0.2);
+        console.log("Idle");
       } else {
-        avgcpu = 0.8 * avgcpu + 0.2 * cpuPercentage;
+        miner.setNumThreads(activeThreads);
+        miner.setThrottle(0.5);
+        console.log("not");
       }
-      console.log(avgcpu);
-      if (avgcpu > 50 && miner.getThrottle() < 1) {
-        miner.setThrottle(miner.getThrottle() + 0.2);
-      } else if (avgcpu < 30 && miner.getThrottle() > 0.00) {
-        miner.setThrottle(miner.getThrottle() - 0.2);
-      }
-      console.log(miner.getThrottle());
-    })
+    });
   }
-}, 500);
-
-chrome.idle.onStateChanged.addListener(function (idleState) {
-  if (idleState == "idle") {
-    miner.setThrottle(0.2);
-    console.log("Idle");
-  } else {
-    miner.setThrottle(0.8);
-    console.log("not");
-  }
-});
+}, 5000);
