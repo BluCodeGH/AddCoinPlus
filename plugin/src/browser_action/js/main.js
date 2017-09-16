@@ -3,6 +3,39 @@ var port = chrome.extension.connect({
   name: "Sample Communication"
 });
 
+$('[data-toggle="tooltip"]').tooltip();
+
+
+var maxThreads = 0;
+chrome.system.cpu.getInfo(function(info){
+  maxThreads = info.numOfProcessors;
+  $("#threads2").text( maxThreads - 1 );
+});
+
+$("#threads-plus").click(function(){
+  if ( parseInt($("#threads").text()) < maxThreads ) {
+    $("#threads").text( parseInt($("#threads").text()) + 1 );
+  }
+})
+
+$("#threads-minus").click(function(){
+  if ( parseInt($("#threads").text()) > 1) {
+    $("#threads").text( parseInt($("#threads").text()) - 1 );
+  }
+})
+
+$("#threads-plus-2").click(function(){
+  if ( parseInt($("#threads2").text()) < maxThreads ) {
+    $("#threads2").text( parseInt($("#threads2").text()) + 1 );
+  }
+})
+
+$("#threads-minus-2").click(function(){
+  if ( parseInt($("#threads2").text()) > 1) {
+    $("#threads2").text( parseInt($("#threads2").text()) - 1 );
+  }
+})
+
 var bg = chrome.extension.getBackgroundPage();
 
 port.onMessage.addListener(function(msg) {
@@ -54,5 +87,3 @@ setInterval(function() { //Update UI
 }, 1000)
 
 });
-
-

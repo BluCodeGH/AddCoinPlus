@@ -11,12 +11,34 @@
 	#stats {
 		margin-top: 20px;
 	}
+	#threads-plus {
+    margin: 10px;
+		cursor: pointer;
+	}
+	#threads-minus {
+		cursor: pointer;
+	}
+	#threads-plus-2 {
+    margin: 10px;
+		cursor: pointer;
+	}
+	#threads-minus-2 {
+		cursor: pointer;
+	}
+	#question-active {
+		cursor: pointer;
+	}
+	#question-sleep {
+		cursor: pointer;
+	}
 </style>
 <script src="jquery-3.2.1.min.js"></script>
 <link rel="stylesheet" href="./css/bootstrap.min.css">
+<link rel="stylesheet" href="./css/bootstrap-slider.min.css">
 <!-- <script src="./popper.js"></script> -->
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/main.js"></script>
+<script src="./js/bootstrap-slider.min.js"></script>
 
 
 <div id="mainPopup">
@@ -45,6 +67,20 @@
 	    <span class="badge" id="total" style="font-size: 36px">0</span>
 	  </div>
 	</div><!-- /.row -->
+	<div class="row" style="text-align: center; margin-top: 30px;">
+		<div class="col-xs-6">
+			<h3 style="margin-top: 5px; font-size: 20px;">Threads Active <span class="glyphicon glyphicon-question-sign" id="question-active" data-toggle="tooltip" title="Number of working threads when you are using your computer"></span></h3>
+			<span class="badge" id="threads" style="font-size: 36px">1</span>
+			<span class="glyphicon glyphicon-plus" id="threads-plus"></span>
+			<span class="glyphicon glyphicon-minus" id="threads-minus"></span>
+		</div>
+		<div class="col-xs-6">
+			<h3 style="margin-top: 5px; font-size: 20px;">Threads Sleep <span class="glyphicon glyphicon-question-sign" id="question-sleep" data-toggle="tooltip" title="Number of working threads when you haven't used your computer in 60s"></span></h3>
+			<span class="badge" id="threads2" style="font-size: 36px">1</span>
+			<span class="glyphicon glyphicon-plus" id="threads-plus-2"></span>
+			<span class="glyphicon glyphicon-minus" id="threads-minus-2"></span>
+		</div>
+	</div>
 	<div class="row" id="footer">
 	  <div class="col-xs-6">
 			<!-- AddToAny BEGIN -->
