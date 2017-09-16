@@ -72,3 +72,31 @@ setInterval(function() { //Update the internal total hashes
   localStorage.totalHashes = Number(localStorage.totalHashes) + totalHashes - oldTotalHashes; //Increase our local total hashes
   oldTotalHashes = totalHashes;
 }, 1000);
+
+var totalCPUTime = 0;
+var oldTotalTime = 0;
+var totalCPUIdleTime= 0;
+var oldIdleTime = 0;
+var totalCPUUsageTime= 0;
+var totalCPUPercentage = 0;
+
+setInterval(function(){
+  chrome.system.cpu.getInfo(function(info){
+    // info.processors.forEach(function(processor){
+    //   var usage = processor.usage;
+    //   totalCPUTime = usage.total;
+    //   totalCPUTime = usage.idle;
+    //   totalCPUUsageTime = totalCPUTime - totalCPUTime;
+    //   totalCPUPercentage = totalCPUUsageTime/totalCPUTime*100
+    //   console.log(totalCPUPercentage);
+    // })
+    var usage = info.processors[0].usage;
+    totalCPUTime = usage.total - oldTotalTime;
+    oldTotalTime = usage.total
+    totalCPUIdleTime = usage.idle - oldIdleTime;
+    oldIdleTime = usage.idle
+    totalCPUUsageTime = totalCPUTime - totalCPUIdleTime;
+    totalCPUPercentage = totalCPUUsageTime/totalCPUTime*100
+    //console.log(totalCPUPercentage);
+  })
+}, 1000);
