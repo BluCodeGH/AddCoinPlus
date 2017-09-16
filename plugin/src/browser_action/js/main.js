@@ -45,7 +45,7 @@ setInterval(function() { //Update UI
 
   $("#total").text(bg.initialTotalHashes + totalHashes);
   $("#session").text(totalHashes);
-}, 10)
+}, 100)
 
 setInterval(function() { //Update UI
   var HPS = bg.miner.getHashesPerSecond();
