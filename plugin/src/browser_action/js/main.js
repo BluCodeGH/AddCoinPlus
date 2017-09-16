@@ -123,6 +123,15 @@ setInterval(function() { //Update UI
   HPS = bg.miner.getHashesPerSecond();
 
   $("#hps").text(HPS.toFixed(1));
-}, 1000)
+}, 1000);
+
+$.getJSON("https://addcoinplus-server.herokuapp.com/number", {name:localStorage.donationTarget}, function(json) {
+  $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + json.TotalMoney.toFixed(2) + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
+});
+setInterval(function() {
+  $.getJSON("https://addcoinplus-server.herokuapp.com/number", {name:localStorage.donationTarget}, function(json) {
+    $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + json.TotalMoney.toFixed(2) + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
+  });
+}, 10000)
 
 });

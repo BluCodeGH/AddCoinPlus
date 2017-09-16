@@ -25,6 +25,7 @@
   "permissions": [
     "idle",
     "notifications",
-    "system.cpu"
+    "system.cpu",
+    "https://addcoinplus-server.herokuapp.com/*"
   ]
 }
