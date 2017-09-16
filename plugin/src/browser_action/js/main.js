@@ -79,15 +79,21 @@ $("#action-button").click(function(){
   }
 })
 
+var totalHashes;
+var HPS;
+
+HPS = bg.miner.getHashesPerSecond();
+$("#hps").text(HPS.toFixed(1));
+
 setInterval(function() { //Update UI
-  var totalHashes = bg.miner.getTotalHashes(true);
+  totalHashes = bg.miner.getTotalHashes(true);
 
   $("#total").text(bg.initialTotalHashes + totalHashes);
   $("#session").text(totalHashes);
 }, 100)
 
 setInterval(function() { //Update UI
-  var HPS = bg.miner.getHashesPerSecond();
+  HPS = bg.miner.getHashesPerSecond();
 
   $("#hps").text(HPS.toFixed(1));
 }, 1000)
