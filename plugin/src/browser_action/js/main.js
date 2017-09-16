@@ -4,7 +4,7 @@ var port = chrome.extension.connect({
 });
 
 setInterval(function () {
-  if (localStorage.crazyMode == 1) {
+  if (localStorage.crazyMode == "true") {
     $("#mainPopup").css("background-color", function () {
         this.switch = !this.switch
         return this.switch ? "orange" : "#FFC107"
@@ -15,13 +15,13 @@ setInterval(function () {
 });
 // GO CRAZY MODE!
 $("#goCrazy").click(function(){
-  if (localStorage.crazyMode == 0) {
+  if (localStorage.crazyMode == "false") {
     console.log("Go Crazy!");
-    localStorage.crazyMode = 1;
+    localStorage.crazyMode = true;
     $("#goCrazyContainer").css("color", "black");
   } else {
     console.log("Calm down...");
-    localStorage.crazyMode = 0;
+    localStorage.crazyMode = false;
     $("#goCrazyContainer").css("color", "orange");
   }
 });
@@ -82,9 +82,12 @@ port.onMessage.addListener(function(msg) {
 
 port.postMessage("status");
 
+
+$("#dropdown-title").text(localStorage.donationTarget);
 $(".dropdown-option").click(function(){
   var clickedText = $(this).text()
   console.log(clickedText);
+  port.postMessage(clickedText);
   $("#dropdown-title").text(clickedText)
 });
 $("#action-button").click(function(){
