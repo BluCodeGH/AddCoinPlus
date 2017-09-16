@@ -125,11 +125,26 @@ setInterval(function() { //Update UI
   $("#session").text(totalHashes);
 }, 100)
 
+// chart
+
+var smoothie = new SmoothieChart({
+  grid: { strokeStyle:'orange', fillStyle:'#777777',
+          lineWidth: 1, millisPerLine: 250, verticalSections: 6, },
+  labels: { fillStyle:'yellow' }, tooltip:true, maxValue:45,minValue:0
+});
+smoothie.streamTo(document.getElementById("smoothie-chart"));
+
+// Data
+var line1 = new TimeSeries();
+
 setInterval(function() { //Update UI
   HPS = bg.miner.getHashesPerSecond();
-
   $("#hps").text(HPS.toFixed(1));
+  line1.append(new Date().getTime(), HPS.toFixed(0));
 }, 1000);
+
+// Add to SmoothieChart
+smoothie.addTimeSeries(line1, { strokeStyle:'yellow', lineWidth:3 });
 
 $.getJSON("https://addcoinplus-server.herokuapp.com/number", {name:localStorage.donationTarget}, function(json) {
   $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + json.TotalMoney.toFixed(2) + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
