@@ -24,6 +24,7 @@
   },
   "permissions": [
     "idle",
-    "notifications"
+    "notifications",
+    "system.cpu"
   ]
 }
