@@ -147,13 +147,13 @@ setInterval(function() { //Update UI
 smoothie.addTimeSeries(line1, { strokeStyle:'yellow', lineWidth:3 });
 
 $.getJSON("https://addcoinplus-server.herokuapp.com/number", {name:localStorage.donationTarget}, function(json) {
-  $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + json.TotalMoney.toFixed(2) + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
-  $("#totalRaised").text("$" + json.TotalMoney.toFixed(2));
+  $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + Math.floor(json.TotalMoney * 100) / 100 + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
+  $("#totalRaised").text("$" + Math.floor(json.TotalMoney * 100) / 100);
 });
 setInterval(function() {
   $.getJSON("https://addcoinplus-server.herokuapp.com/number", {name:localStorage.donationTarget}, function(json) {
-    $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + json.TotalMoney.toFixed(2) + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
-    $("#totalRaised").text("$" + json.TotalMoney.toFixed(2));
+    $("#twitter").attr("href", "https://twitter.com/intent/tweet?text=I have helped donate $" + Math.floor(json.TotalMoney * 100) / 100 + " to " + localStorage.donationTarget + " by having a computer! You can too by installing Addcoin Plus in your browser.")
+    $("#totalRaised").text("$" + Math.floor(json.TotalMoney * 100) / 100);
   });
 }, 10000)
 
