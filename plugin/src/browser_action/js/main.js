@@ -3,6 +3,14 @@ var port = chrome.extension.connect({
   name: "Sample Communication"
 });
 
+if (localStorage.crazyMode == "true") {
+  $("#goCrazyContainer").css("color", "black");
+  $("#mainPopup").css("background-color", "orange");
+} else {
+  $("#goCrazyContainer").css("color", "orange");
+  $("#mainPopup").css("background-color", "white");
+}
+
 // GO CRAZY MODE!
 $("#goCrazy").click(function(){
   if (localStorage.crazyMode == "false") {
