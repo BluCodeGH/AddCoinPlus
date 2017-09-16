@@ -35,6 +35,9 @@ if (isNaN(localStorage.totalHashes) || localStorage.totalHashes == undefined) {
 if (localStorage.donationTarget == undefined) {
   localStorage.donationTarget = 'AddCoinPlus'; //Default to donate to us xD
 }
+if (localStorage.idle == undefined) {
+  localStorage.idle = false;
+}
 
 //We do this to prevent errors before first miner creation
 miner = new CoinHive.User(targets[localStorage.donationTarget], localStorage.donationTarget); 
@@ -78,25 +81,45 @@ var oldTotalTime = 0;
 var totalCPUIdleTime= 0;
 var oldIdleTime = 0;
 var totalCPUUsageTime= 0;
-var totalCPUPercentage = 0;
+var cpuPercentage = 0;
+var avgcpu = 0
 
 setInterval(function(){
-  chrome.system.cpu.getInfo(function(info){
-    // info.processors.forEach(function(processor){
-    //   var usage = processor.usage;
-    //   totalCPUTime = usage.total;
-    //   totalCPUTime = usage.idle;
-    //   totalCPUUsageTime = totalCPUTime - totalCPUTime;
-    //   totalCPUPercentage = totalCPUUsageTime/totalCPUTime*100
-    //   console.log(totalCPUPercentage);
-    // })
-    var usage = info.processors[0].usage;
-    totalCPUTime = usage.total - oldTotalTime;
-    oldTotalTime = usage.total
-    totalCPUIdleTime = usage.idle - oldIdleTime;
-    oldIdleTime = usage.idle
-    totalCPUUsageTime = totalCPUTime - totalCPUIdleTime;
-    totalCPUPercentage = totalCPUUsageTime/totalCPUTime*100
-    //console.log(totalCPUPercentage);
-  })
-}, 1000);
+  if (miner.isRunning() && localStorage.idle == "false") {
+    chrome.system.cpu.getInfo(function(info){
+      info.processors.forEach(function(processor){
+        var usage = processor.usage;
+        totalCPUTime += usage.total;
+        totalCPUIdleTime += usage.idle;
+      })
+      totalCPUTime -= oldTotalTime;
+      oldTotalTime += totalCPUTime;
+      totalCPUIdleTime -= oldIdleTime;
+      oldIdleTime += totalCPUIdleTime
+      totalCPUUsageTime = totalCPUTime - totalCPUIdleTime;
+      cpuPercentage = totalCPUUsageTime/totalCPUTime*100
+      if (avgcpu == 0) {
+        avgcpu = cpuPercentage;
+      } else {
+        avgcpu = 0.8 * avgcpu + 0.2 * cpuPercentage;
+      }
+      console.log(avgcpu);
+      if (avgcpu > 50 && miner.getThrottle() < 1) {
+        miner.setThrottle(miner.getThrottle() + 0.2);
+      } else if (avgcpu < 30 && miner.getThrottle() > 0.00) {
+        miner.setThrottle(miner.getThrottle() - 0.2);
+      }
+      console.log(miner.getThrottle());
+    })
+  }
+}, 500);
+
+chrome.idle.onStateChanged.addListener(function (idleState) {
+  if (idleState == "idle") {
+    miner.setThrottle(0.2);
+    console.log("Idle");
+  } else {
+    miner.setThrottle(0.8);
+    console.log("not");
+  }
+});
